@@ -1,0 +1,282 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 8,
+    "passes": 7,
+    "pending": 0,
+    "failures": 1,
+    "testsRegistered": 8,
+    "passPercent": 87.5,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false,
+    "start": "2023-08-22T17:32:35.861Z",
+    "end": "2023-08-22T17:32:40.156Z",
+    "duration": 4295
+  },
+  "results": [
+    {
+      "uuid": "94a6f738-04d1-4486-942e-e6b33a569955",
+      "title": "",
+      "fullFile": "cypress\\e2e\\produtos.cy.js",
+      "file": "cypress\\e2e\\produtos.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "40538233-1779-4fcd-8bae-5b520bdf3aac",
+          "title": "Teste da Funcionalidade Produtos",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Deve validar contrato de produtos",
+              "fullTitle": "Teste da Funcionalidade Produtos Deve validar contrato de produtos",
+              "timedOut": null,
+              "duration": 93,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request('produtos').then(Response => {\n  return _produtos.default.validateAsync(Response.body);\n});",
+              "err": {},
+              "uuid": "f1e74bee-f532-4fb0-a421-87dc5f845c75",
+              "parentUUID": "40538233-1779-4fcd-8bae-5b520bdf3aac",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Listar Produtos",
+              "fullTitle": "Teste da Funcionalidade Produtos Listar Produtos",
+              "timedOut": null,
+              "duration": 49,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request({\n  method: 'GET',\n  url: 'produtos'\n}).then(Response => {\n  expect(Response.body.produtos[0].nome).to.equal('Produto EBAC 83577913');\n  expect(Response.status).to.equal(200);\n  expect(Response.body).to.have.property('produtos');\n  expect(Response.duration).to.be.lessThan(35);\n});",
+              "err": {},
+              "uuid": "94c74e9b-8639-465a-bd8e-85f502a3402a",
+              "parentUUID": "40538233-1779-4fcd-8bae-5b520bdf3aac",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Cadastrar produto",
+              "fullTitle": "Teste da Funcionalidade Produtos Cadastrar produto",
+              "timedOut": null,
+              "duration": 47,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let produto = `Produto EBAC ${Math.floor(Math.random() * 100000000)}`;\ncy.request({\n  method: 'POST',\n  url: 'produtos',\n  body: {\n    \"nome\": produto,\n    \"preco\": 600,\n    \"descricao\": \"Cadeira\",\n    \"quantidade\": 200\n  },\n  headers: {\n    authorization: token\n  }\n}).then(Response => {\n  expect(Response.status).to.equal(201);\n  expect(Response.body.message).to.equal('Cadastro realizado com sucesso');\n});",
+              "err": {},
+              "uuid": "82dc55cf-d3ed-454f-ba28-ebd6bad1fc79",
+              "parentUUID": "40538233-1779-4fcd-8bae-5b520bdf3aac",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve validar mensangem de erro ao cadastrar produto repetido",
+              "fullTitle": "Teste da Funcionalidade Produtos Deve validar mensangem de erro ao cadastrar produto repetido",
+              "timedOut": null,
+              "duration": 41,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.cadastrarProduto(token, \"Cadeira Gamer\", 600, \"Descrição do produto novo\", 200).then(Response => {\n  expect(Response.status).to.equal(400);\n  expect(Response.body.message).to.equal('Já existe produto com esse nome');\n});",
+              "err": {},
+              "uuid": "3aefa936-214b-473f-9ba1-6fc699398300",
+              "parentUUID": "40538233-1779-4fcd-8bae-5b520bdf3aac",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve editar um produto já cadastrado",
+              "fullTitle": "Teste da Funcionalidade Produtos Deve editar um produto já cadastrado",
+              "timedOut": null,
+              "duration": 308,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.request('produtos').then(Response => {\n  let id = Response.body.produtos[13]._id;\n  cy.request({\n    method: 'PUT',\n    url: `produtos/${id}`,\n    headers: {\n      authorization: token\n    },\n    body: {\n      \"nome\": \"Produtos EBAC NOVO\",\n      \"preco\": 470,\n      \"descricao\": \"Produto editado\",\n      \"quantidade\": 381\n    }\n  }).then(Response => {\n    expect(Response.body.message).to.equal('Registro alterado com sucesso');\n  });\n});",
+              "err": {
+                "message": "CypressError: `cy.request()` failed on:\n\nhttp://localhost:3000/produtos/Qz4Vy5mkd9Y30v1n\n\nThe response we received from your web server was:\n\n  > 400: Bad Request\n\nThis was considered a failure because the status code was not `2xx` or `3xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n\n-----------------------------------------------------------\n\nThe request we sent was:\n\nMethod: PUT\nURL: http://localhost:3000/produtos/Qz4Vy5mkd9Y30v1n\nHeaders: {\n  \"Connection\": \"keep-alive\",\n  \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZ1bGFub0BxYS5jb20iLCJwYXNzd29yZCI6InRlc3RlIiwiaWF0IjoxNjkyNzI1NTU5LCJleHAiOjE2OTI3MjYxNTl9.lg81KX68RHTfIKnpPWJGkVkwvSyd5zL_JDY0Q32E6xs\",\n  \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Cypress/12.17.3 Chrome/106.0.5249.51 Electron/21.0.0 Safari/537.36\",\n  \"accept\": \"*/*\",\n  \"accept-encoding\": \"gzip, deflate\",\n  \"content-type\": \"application/json\",\n  \"content-length\": 88\n}\nBody: {\"nome\":\"Produtos EBAC NOVO\",\"preco\":470,\"descricao\":\"Produto editado\",\"quantidade\":381}\n\n-----------------------------------------------------------\n\nThe response we got was:\n\nStatus: 400 - Bad Request\nHeaders: {\n  \"access-control-allow-origin\": \"*\",\n  \"x-dns-prefetch-control\": \"off\",\n  \"x-frame-options\": \"SAMEORIGIN\",\n  \"strict-transport-security\": \"max-age=15552000; includeSubDomains\",\n  \"x-download-options\": \"noopen\",\n  \"x-content-type-options\": \"nosniff\",\n  \"x-xss-protection\": \"1; mode=block\",\n  \"x-moesif-transaction-id\": \"e319ba58-48b6-4080-8d5d-3969ee705628\",\n  \"content-type\": \"application/json; charset=utf-8\",\n  \"content-length\": \"53\",\n  \"date\": \"Tue, 22 Aug 2023 17:32:39 GMT\",\n  \"connection\": \"keep-alive\",\n  \"keep-alive\": \"timeout=5\"\n}\nBody: {\n  \"message\": \"Já existe produto com esse nome\"\n}\n\n\nhttps://on.cypress.io/request",
+                "estack": "CypressError: `cy.request()` failed on:\n\nhttp://localhost:3000/produtos/Qz4Vy5mkd9Y30v1n\n\nThe response we received from your web server was:\n\n  > 400: Bad Request\n\nThis was considered a failure because the status code was not `2xx` or `3xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n\n-----------------------------------------------------------\n\nThe request we sent was:\n\nMethod: PUT\nURL: http://localhost:3000/produtos/Qz4Vy5mkd9Y30v1n\nHeaders: {\n  \"Connection\": \"keep-alive\",\n  \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZ1bGFub0BxYS5jb20iLCJwYXNzd29yZCI6InRlc3RlIiwiaWF0IjoxNjkyNzI1NTU5LCJleHAiOjE2OTI3MjYxNTl9.lg81KX68RHTfIKnpPWJGkVkwvSyd5zL_JDY0Q32E6xs\",\n  \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Cypress/12.17.3 Chrome/106.0.5249.51 Electron/21.0.0 Safari/537.36\",\n  \"accept\": \"*/*\",\n  \"accept-encoding\": \"gzip, deflate\",\n  \"content-type\": \"application/json\",\n  \"content-length\": 88\n}\nBody: {\"nome\":\"Produtos EBAC NOVO\",\"preco\":470,\"descricao\":\"Produto editado\",\"quantidade\":381}\n\n-----------------------------------------------------------\n\nThe response we got was:\n\nStatus: 400 - Bad Request\nHeaders: {\n  \"access-control-allow-origin\": \"*\",\n  \"x-dns-prefetch-control\": \"off\",\n  \"x-frame-options\": \"SAMEORIGIN\",\n  \"strict-transport-security\": \"max-age=15552000; includeSubDomains\",\n  \"x-download-options\": \"noopen\",\n  \"x-content-type-options\": \"nosniff\",\n  \"x-xss-protection\": \"1; mode=block\",\n  \"x-moesif-transaction-id\": \"e319ba58-48b6-4080-8d5d-3969ee705628\",\n  \"content-type\": \"application/json; charset=utf-8\",\n  \"content-length\": \"53\",\n  \"date\": \"Tue, 22 Aug 2023 17:32:39 GMT\",\n  \"connection\": \"keep-alive\",\n  \"keep-alive\": \"timeout=5\"\n}\nBody: {\n  \"message\": \"Já existe produto com esse nome\"\n}\n\n\nhttps://on.cypress.io/request\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:149327:80)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:18744:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:16679:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:16736:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:16781:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:16861:18)\n    at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:13451:12)\n    at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:13444:9)\n    at ../../node_modules/bluebird/js/release/async.js.Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:13460:5)\n    at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:13330:14)\nFrom Your Spec Code:\n    at Context.eval (webpack:///./cypress/e2e/produtos.cy.js:61:15)",
+                "diff": null
+              },
+              "uuid": "feba17c9-7557-4cfa-92bc-372845f068f9",
+              "parentUUID": "40538233-1779-4fcd-8bae-5b520bdf3aac",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve editar um produto cadastrado previamente",
+              "fullTitle": "Teste da Funcionalidade Produtos Deve editar um produto cadastrado previamente",
+              "timedOut": null,
+              "duration": 91,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let produto = `Produto EBAC ${Math.floor(Math.random() * 100000000)}`;\ncy.cadastrarProduto(token, produto, 600, \"Descrição do produto novo\", 200).then(Response => {\n  let id = Response.body._id;\n  cy.request({\n    method: 'PUT',\n    url: `produtos/${id}`,\n    headers: {\n      authorization: token\n    },\n    body: {\n      \"nome\": produto,\n      \"preco\": 400,\n      \"descricao\": \"Produto editado\",\n      \"quantidade\": 300\n    }\n  }).then(Response => {\n    expect(Response.body.message).to.equal('Registro alterado com sucesso');\n  });\n});",
+              "err": {},
+              "uuid": "83f32432-0c5e-4f79-90e2-737e7550a36d",
+              "parentUUID": "40538233-1779-4fcd-8bae-5b520bdf3aac",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve deletar um produto previamente cadastrado",
+              "fullTitle": "Teste da Funcionalidade Produtos Deve deletar um produto previamente cadastrado",
+              "timedOut": null,
+              "duration": 60,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let produto = `Produto EBAC ${Math.floor(Math.random() * 100000000)}`;\ncy.cadastrarProduto(token, produto, 600, \"Descrição do produto novo\", 200).then(Response => {\n  let id = Response.body._id;\n  cy.request({\n    method: 'DELETE',\n    url: `produtos/${id}`,\n    headers: {\n      authorization: token\n    }\n  }).then(Response => {\n    expect(Response.body.message).to.equal('Registro excluído com sucesso');\n    expect(Response.status).to.equal(200);\n  });\n});",
+              "err": {},
+              "uuid": "68fb7620-5494-4c5d-9c80-df256e4428ea",
+              "parentUUID": "40538233-1779-4fcd-8bae-5b520bdf3aac",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "f1e74bee-f532-4fb0-a421-87dc5f845c75",
+            "94c74e9b-8639-465a-bd8e-85f502a3402a",
+            "82dc55cf-d3ed-454f-ba28-ebd6bad1fc79",
+            "3aefa936-214b-473f-9ba1-6fc699398300",
+            "83f32432-0c5e-4f79-90e2-737e7550a36d",
+            "68fb7620-5494-4c5d-9c80-df256e4428ea"
+          ],
+          "failures": [
+            "feba17c9-7557-4cfa-92bc-372845f068f9"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 689,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "b97c3298-8af3-4318-a3ef-f90ef96fb8bf",
+      "title": "",
+      "fullFile": "cypress\\e2e\\login.cy.js",
+      "file": "cypress\\e2e\\login.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "37903dd0-f813-459e-925d-894b313bac1d",
+          "title": "Login - Testes da API Serverest",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Deve fazer login com sucesso",
+              "fullTitle": "Login - Testes da API Serverest Deve fazer login com sucesso",
+              "timedOut": null,
+              "duration": 151,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request({\n  method: 'POST',\n  url: 'http://localhost:3000/login',\n  body: {\n    \"email\": \"fulano@qa.com\",\n    \"password\": \"teste\"\n  }\n}).then(Response => {\n  expect(Response.status).to.equal(200);\n  expect(Response.body.message).to.equal('Login realizado com sucesso');\n  cy.log(Response.body.authorization);\n});",
+              "err": {},
+              "uuid": "4625b324-83f1-4012-9012-9f8a33b54232",
+              "parentUUID": "37903dd0-f813-459e-925d-894b313bac1d",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "4625b324-83f1-4012-9012-9f8a33b54232"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 151,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "mochawesome-report",
+        "overwrite": false,
+        "html": false,
+        "JSON": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

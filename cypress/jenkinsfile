@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clonar o Repositório') {
+            steps {
+               git branch: 'main', url: 'https://github.com/AmandaFrat/teste-api-cy-1.git'
+            }
+        }
+        stage('Instalar Dependências') {
+            steps {
+               bat 'npm install'
+            }
+        }
+        stage('Serverest') {
+            steps {
+               bat 'npm run cy:run-ci'
+            }
+        }
+        stage('Executar testes') {
+            steps {
+               bat 'npm run cy:run'
+            }
+        }
+    }
+}
